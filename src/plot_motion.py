@@ -49,9 +49,14 @@ df = pd.read_csv("data/pose_landmarks.csv")
 df["hip_y_smooth"] = df["hip_y"].rolling(window = 5, center = True).mean()
 signal = df["hip_y_smooth"].dropna()
 
-peaks, _ = find_peaks(signal, distance = 40, prominence=0.05)
+#native peaks is for the comparison but won't get used
+naive_peaks, _ = find_peaks(signal)
 
-signal_index = signal.index[peaks]
+# Robust peak detection: aka what I'm actually using
+peaks, _ = find_peaks(signal, distance=40, prominence=0.05)
+
+naive_index = signal.index[naive_peaks]
+filtered_index = signal.index[peaks]
 
 bottom_indices = signal.index[peaks].to_list()
 bottom_indices = sorted(bottom_indices)
@@ -127,11 +132,37 @@ print("\n Rep features")
 print(features_df)
 
 features_df.to_csv("data/features.csv", index=False)
+plt.figure(figsize=(10, 5))
 
-plt.plot(df["frame"], df["hip_y_smooth"])
-plt.plot(df.loc[signal_index, "frame"], df.loc[signal_index, "hip_y_smooth"], "ro", label="Detected rep bottoms")
+
+#used chatgpt to make this visualization
+# Raw signal
+plt.plot(df["frame"], df["hip_y"], alpha=0.3, label="Raw hip signal")
+
+# Smoothed signal
+plt.plot(df["frame"], df["hip_y_smooth"], label="Smoothed signal")
+
+# Naive peaks
+plt.plot(
+    df.loc[naive_index, "frame"],
+    df.loc[naive_index, "hip_y_smooth"],
+    "x",
+    label="Naive peaks"
+)
+
+# Filtered peaks (final method)
+plt.plot(
+    df.loc[filtered_index, "frame"],
+    df.loc[filtered_index, "hip_y_smooth"],
+    "ro",
+    label="Filtered rep bottoms"
+)
+
 plt.xlabel("Frame")
 plt.ylabel("Hip Y Position")
-plt.title("Bulgarian Split Squat Hip Movement Over Time")
-plt.show()
+plt.title("Rep Detection Preprocessing Pipeline")
+plt.legend()
+plt.tight_layout()
 
+plt.savefig("docs/rep_detection_comparison.png", dpi=300)
+plt.show()

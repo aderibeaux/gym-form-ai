@@ -14,7 +14,7 @@ Specific uses:
 - The use of Pipeline in cross_val_model
 - structure for hyperparam_tune_forest
 - model_comparison_chart
-- calculate_angle and angle_to_vertical functions in plot_motion as well as the smoothing in the plotting
+- calculate_angle and angle_to_vertical functions in plot_motion as well as the smoothing in the plotting and the plot at the end
 - Most of pose_test came from the documentation but used some AI for adjusting it to what I wanted
 - test_env was completely AI to test if environment was set up correctly
 
