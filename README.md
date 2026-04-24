@@ -27,7 +27,7 @@ python src/realtime_predict.py
 Demo Video:[Watch the demo video](videos/demo_video.mp4)
 
 Technical Walkthrough:
-https://youtu.be/XLjLN056S8s
+https://youtu.be/qFY2hY0H96Q
 
 # Evaluation
 
