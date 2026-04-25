@@ -48,13 +48,14 @@ df = pd.read_csv("data/pose_landmarks.csv")
 #used AI for the smoothing
 df["hip_y_smooth"] = df["hip_y"].rolling(window = 5, center = True).mean()
 signal = df["hip_y_smooth"].dropna()
-
+#Handled noisy pose landmarks using rolling mean smoothing 
+#and addressed false rep detections using prominence and 
+#distance thresholds in peak detection (src/plot_motion.py 
+#lines 48-72).
 #native peaks is for the comparison but won't get used
 naive_peaks, _ = find_peaks(signal)
-
 # Robust peak detection: aka what I'm actually using
 peaks, _ = find_peaks(signal, distance=40, prominence=0.05)
-
 naive_index = signal.index[naive_peaks]
 filtered_index = signal.index[peaks]
 
@@ -62,14 +63,12 @@ bottom_indices = signal.index[peaks].to_list()
 bottom_indices = sorted(bottom_indices)
 
 rep_intervals = []
-
 if len(bottom_indices) >= 1:
     boundaries = [0]
     for i in range (len(bottom_indices)-1):
         midpoint = (bottom_indices[i] + bottom_indices[i+1])//2
         boundaries.append(midpoint)
     boundaries.append(len(df) - 1)
-
     for i, bottom_idx in enumerate(bottom_indices):
         start_idx = boundaries[i]
         end_idx = boundaries[i+1]
@@ -82,7 +81,6 @@ if len(bottom_indices) >= 1:
         })
 
         print(rep_intervals)
-
 
 feature_rows = []
 
