@@ -43,14 +43,16 @@ Visual for performance among diffferent models:
 | SVM | 0.851 | 0.851 | 0.851 | 0.849 |
 | Random Forest | **0.915** | **0.919** | **0.915** | **0.916** |
 
-The Random Forest classifier achieved the best performance and was selected as the final model.
+The Random Forest classifier achieved the best overall performance and was selected as the final model. The baseline model performs poorly because it predicts only the most frequent class, demonstrating that the classification task is non-trivial. Logistic Regression and SVM perform significantly better, indicating that the engineered pose features contain useful information for distinguishing squat form categories. However, the Random Forest model performs best, likely because it can capture nonlinear relationships between joint angle features such as hip, knee, and torso angles.
 
 Additional evaluation included:
 
 - Confusion matrix analysis:
 ![Confusion Matrix](docs/confusion_matrix.png)
+The confusion matrix shows that most predictions fall along the diagonal, indicating mostly correct classification across the three squat categories. The most common errors occur between good and shallow repetitions. This probably happens because the main difference between these movements is squat depth, which can vary slightly between people and may not always be perfectly captured by pose landmarks. However, upright squats are rarely confused with other categories because the torso angle differs more significantly.
 - Feature importance visualization:
 ![Feature Importance](docs/feature_importance.png)
+The feature importance analysis shows that joint angles and hip movement features are the most informative for classification. In particular, the bottom knee angle and bottom hip angle contribute strongly to distinguishing shallow squats from correct repetitions, while torso angle helps identify upright posture errors. This confirms that the engineered biomechanical features capture meaningful differences in squat form.
 - 5-fold cross validation
 - Hyperparameter tuning with GridSearchCV
 

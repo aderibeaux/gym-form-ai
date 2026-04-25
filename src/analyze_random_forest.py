@@ -71,3 +71,14 @@ plt.show()
 
 joblib.dump(rf_model, "models/squat_model.pkl")
 print("Saved model as squat_model.pkl")
+
+#The confusion matrix shows that the model 
+#occasionally confuses good reps with shallow reps. 
+#This probably happens when the squat depth is close 
+#to the threshold between the two classes, making the 
+#joint angle features similar (one of the most challenging inputs). Additionally, one shallow 
+#rep was misclassified as upright, which suggests that both problems
+#could have been occuring at the same time because it is not hard
+#to do both errors at the same time. For example, a shallow squat 
+#may also have an upright torso, making it difficult for 
+#the classifier to distinguish between these categories.

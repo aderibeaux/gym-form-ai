@@ -8,7 +8,7 @@ Required libraries are listed in requirements.txt.
 
 Clone the repository:
 
-git clone <repo-url> ******************
+git clone <https://github.com/aderibeaux/gym-form-ai/blob/main/videos/technical_video> 
 cd gym-form-ai
 
 Install dependencies:
